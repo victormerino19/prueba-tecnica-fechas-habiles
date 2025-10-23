@@ -20,23 +20,47 @@ export class ProveedorFestivosRemoto implements ProveedorFestivos {
     if (this.cache && ahora - this.cache.obtenidoEn < this.ttlMs) {
       return this.cache.conjunto;
     }
-    const res = await fetch(this.url, { method: "GET" });
-    if (!res.ok) {
-      throw new Error(`Fallo al descargar festivos: ${res.status}`);
+
+    // Fallback seguro: si falla descarga o parseo, devolver conjunto vacío
+    try {
+      const res = await fetch(this.url, { method: "GET" });
+      if (!res.ok) {
+        throw new Error(`Fallo al descargar festivos: ${res.status}`);
+      }
+
+      const ct = res.headers.get("content-type") || "";
+      let data: EstructuraFestivosRemota | string[];
+      if (ct.includes("application/json")) {
+        data = (await res.json()) as EstructuraFestivosRemota | string[];
+      } else {
+        const text = await res.text();
+        try {
+          data = JSON.parse(text) as EstructuraFestivosRemota | string[];
+        } catch {
+          data = { holidays: [] } as EstructuraFestivosRemota;
+        }
+      }
+
+      const lista: string[] = Array.isArray(data)
+        ? data
+        : Array.isArray((data as any).holidays)
+        ? (data as any).holidays
+        : [];
+
+      const conjunto: ConjuntoFestivos = new Set<string>();
+      for (const item of lista) {
+        const dt = DateTime.fromISO(item, { zone: "America/Bogota" });
+        const clave = dt.toFormat("yyyy-LL-dd");
+        conjunto.add(clave);
+      }
+
+      this.cache = { conjunto, obtenidoEn: ahora };
+      return conjunto;
+    } catch (_e) {
+      const conjuntoVacio: ConjuntoFestivos = new Set<string>();
+      this.cache = { conjunto: conjuntoVacio, obtenidoEn: ahora };
+      return conjuntoVacio;
     }
-    const data = (await res.json()) as EstructuraFestivosRemota | string[];
-
-    const lista: string[] = Array.isArray(data) ? data : data.holidays;
-    const conjunto: ConjuntoFestivos = new Set<string>();
-
-    for (const item of lista) {
-      const dt = DateTime.fromISO(item, { zone: "America/Bogota" });
-      const clave = dt.toFormat("yyyy-LL-dd");
-      conjunto.add(clave);
-    }
-
-    this.cache = { conjunto, obtenidoEn: ahora };
-    return conjunto;
   }
 }
 

@@ -119,6 +119,15 @@
           }
           const url = '/api/fecha-habil?' + qs;
           const res = await fetch(url);
+
+          // Si la respuesta no es JSON, mostrarla como texto
+          const contentType = res.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            const text = await res.text();
+            mostrar({ status: res.status, error: 'InvalidResponse', message: text });
+            return;
+          }
+
           const cuerpo = await res.json();
           mostrar(res.ok ? cuerpo : { status: res.status, ...cuerpo });
         } catch (e) {
