@@ -28,7 +28,7 @@ servidor.register(swaggerUi, {
 });
 const proveedorFestivos = new ProveedorFestivosRemoto(URL_FESTIVOS);
 
-function crearError(estado: number, mensaje: string, error: RespuestaErrorApi["error"] = "InvalidParameters") {
+function crearError(estado: 400 | 503, mensaje: string, error: RespuestaErrorApi["error"] = "InvalidParameters") {
   return { status: estado, body: { error, message: mensaje } satisfies RespuestaErrorApi };
 }
 
