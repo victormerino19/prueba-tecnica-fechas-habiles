@@ -176,3 +176,14 @@ Commits relevantes:
 ---
 
 Si necesitas que documente punto por punto contra el texto exacto del `.docx`, indícame y lo desgloso como checklist; la implementación ya cubre los requerimientos descritos arriba.
+
+## Despliegue público (Render)
+- Usa el blueprint incluido (`render.yaml`) para desplegar con un clic.
+- Enlace directo: `https://render.com/deploy?repo=https://github.com/victormerino19/prueba-tecnica-fechas-habiles`
+- Servicio sugerido: `fechas-habiles-api`.
+- URL pública esperada: `https://fechas-habiles-api.onrender.com`.
+- Endpoints:
+  - `GET /api/fecha-habil`
+  - `GET /docs` (Swagger/OpenAPI)
+- Variables de entorno:
+  - `HOLIDAYS_URL` (incluida por defecto en `render.yaml`).

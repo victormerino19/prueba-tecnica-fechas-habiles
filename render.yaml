@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: fechas-habiles-api
+    env: node
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/servidor.js
+    autoDeploy: true
+    envVars:
+      - key: HOLIDAYS_URL
+        value: https://content.capta.co/Recruitment/WorkingDays.json
