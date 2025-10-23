@@ -1,9 +1,9 @@
 import Fastify from "fastify";
 import { DateTime } from "luxon";
-import { ProveedorFestivosRemoto } from "./festivos";
-import { sumarDiasHabiles, sumarHorasHabiles, normalizarHaciaAtrasAHorarioLaboral, configuracionLaboralPorDefecto } from "./tiempoLaboral";
+import { ProveedorFestivosRemoto } from "./festivos.js";
+import { sumarDiasHabiles, sumarHorasHabiles, normalizarHaciaAtrasAHorarioLaboral, configuracionLaboralPorDefecto } from "./tiempoLaboral.js";
 import type { RespuestaErrorApi, RespuestaExitosaApi } from "./tipos";
-import { construirHtmlInterfaz } from "./interfaz";
+import { construirHtmlInterfaz } from "./interfaz.js";
 
 const PUERTO = Number(process.env.PORT || 3000);
 const URL_FESTIVOS = process.env.HOLIDAYS_URL || "https://content.capta.co/Recruitment/WorkingDays.json";

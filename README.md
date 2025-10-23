@@ -158,6 +158,9 @@ Copiar `.env.example` a `.env` y ajustar valores.
 Commits relevantes:
 - `Resolve README.md conflict: keep local documentation` (resolución del conflicto del README).
 - `Merge origin/main into local main (allow unrelated histories)` (integración del remoto).
+- `UI: selector de hora laboral (08–12, 13–17) sin minutos` (interfaz simplificada para horas válidas).
+- `ESM: corregidos imports relativos con extensión .js` (en `servidor.ts`, `tiempoLaboral.ts`, `interfaz.ts`).
+- `deps: añadir @types/luxon y sincronizar package-lock.json` (para `npm ci` en Docker).
 - Cambios previos del proyecto:
   - `Prueba técnica: Fechas hábiles – TS + Fastify + Docker multi-stage`
   - `docker-compose: remover 'version' obsoleta y ajustar nombre del servicio`

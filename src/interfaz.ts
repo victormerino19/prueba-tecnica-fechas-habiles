@@ -9,7 +9,7 @@ export function construirHtmlInterfaz(): string {
       body { font-family: system-ui, sans-serif; margin: 2rem; }
       h1 { margin-top: 0; }
       label { display: block; margin: 0.5rem 0 0.25rem; }
-      input { padding: 0.4rem; }
+      input, select { padding: 0.4rem; }
       .fila { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; }
       .col { min-width: 14rem; }
       .ancho { width: 22rem; max-width: 100%; }
@@ -29,8 +29,20 @@ export function construirHtmlInterfaz(): string {
         <input id="fechaLocal" type="date" class="ancho" />
       </div>
       <div class="col">
-        <label for="horaLocal">Hora (local):</label>
-        <input id="horaLocal" type="time" step="60" class="ancho" />
+        <label for="horaLocal">Hora (laboral):</label>
+        <select id="horaLocal" class="ancho">
+          <option value="" selected>-- elige hora --</option>
+          <option value="08:00">08:00</option>
+          <option value="09:00">09:00</option>
+          <option value="10:00">10:00</option>
+          <option value="11:00">11:00</option>
+          <option value="12:00">12:00</option>
+          <option value="13:00">13:00</option>
+          <option value="14:00">14:00</option>
+          <option value="15:00">15:00</option>
+          <option value="16:00">16:00</option>
+          <option value="17:00">17:00</option>
+        </select>
       </div>
       <div class="col">
         <label for="date">Fecha base (UTC ISO con Z):</label>
@@ -66,7 +78,7 @@ export function construirHtmlInterfaz(): string {
 
       function isoUtcDesdeLocalPickers() {
         const f = document.getElementById('fechaLocal').value; // YYYY-MM-DD
-        const h = document.getElementById('horaLocal').value;  // HH:mm
+        const h = document.getElementById('horaLocal').value;  // HH:mm seleccionado
         if (!f || !h) return null;
         const d = new Date(f + 'T' + h + ':00'); // local time
         return d.toISOString().replace(/\.\d{3}Z$/, 'Z'); // sin milisegundos
@@ -101,22 +113,26 @@ export function construirHtmlInterfaz(): string {
         }
       }
 
+      function formatoHoraLaboral(d) {
+        const h = d.getHours();
+        if (h < 8) return '08:00';
+        if (h > 17) return '17:00';
+        if (h === 12) return '12:00';
+        if ((h >= 8 && h <= 12) || (h >= 13 && h <= 17)) return String(h).padStart(2,'0') + ':00';
+        return '13:00';
+      }
+
       function formatoFechaInput(d) {
         const y = d.getFullYear();
         const m = String(d.getMonth()+1).padStart(2,'0');
         const dia = String(d.getDate()).padStart(2,'0');
         return y + '-' + m + '-' + dia;
       }
-      function formatoHoraInput(d) {
-        const h = String(d.getHours()).padStart(2,'0');
-        const mi = String(d.getMinutes()).padStart(2,'0');
-        return h + ':' + mi;
-      }
 
       function usarEjemplo() {
         const d = new Date('2025-04-10T15:00:00Z');
         document.getElementById('fechaLocal').value = formatoFechaInput(d);
-        document.getElementById('horaLocal').value = formatoHoraInput(d);
+        document.getElementById('horaLocal').value = formatoHoraLaboral(d); // 15:00
         document.getElementById('date').value = d.toISOString().replace(/\.\d{3}Z$/, 'Z');
         document.getElementById('days').value = '5';
         document.getElementById('hours').value = '4';
