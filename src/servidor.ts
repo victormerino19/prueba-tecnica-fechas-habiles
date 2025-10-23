@@ -1,4 +1,6 @@
 import Fastify from "fastify";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
 import { DateTime } from "luxon";
 import { ProveedorFestivosRemoto } from "./festivos.js";
 import { sumarDiasHabiles, sumarHorasHabiles, normalizarHaciaAtrasAHorarioLaboral, configuracionLaboralPorDefecto } from "./tiempoLaboral.js";
@@ -10,6 +12,20 @@ const URL_FESTIVOS = process.env.HOLIDAYS_URL || "https://content.capta.co/Recru
 const ZONA = configuracionLaboralPorDefecto.zona;
 
 const servidor = Fastify({ logger: true });
+servidor.register(swagger, {
+  openapi: {
+    info: {
+      title: "Fechas Hábiles API",
+      version: "1.0.0",
+      description: "Suma días y horas hábiles respetando jornada y festivos"
+    }
+  }
+});
+servidor.register(swaggerUi, {
+  routePrefix: "/docs",
+  staticCSP: true,
+  uiConfig: { docExpansion: "list", deepLinking: true }
+});
 const proveedorFestivos = new ProveedorFestivosRemoto(URL_FESTIVOS);
 
 function crearError(estado: number, mensaje: string, error: RespuestaErrorApi["error"] = "InvalidParameters") {
@@ -17,7 +33,33 @@ function crearError(estado: number, mensaje: string, error: RespuestaErrorApi["e
 }
 
 // Se permite cualquier ruta; aquí uso una en español
-servidor.get("/api/fecha-habil", async (req, reply) => {
+servidor.get("/api/fecha-habil", {
+  schema: {
+    description: "Suma días y/o horas hábiles desde una fecha base",
+    querystring: {
+      type: "object",
+      properties: {
+        date: { type: "string", description: "ISO UTC con sufijo Z" },
+        days: { type: "integer", minimum: 1 },
+        hours: { type: "integer", minimum: 1 }
+      }
+    },
+    response: {
+      200: {
+        type: "object",
+        properties: { date: { type: "string", example: "2025-04-14T19:00:00Z" } }
+      },
+      400: {
+        type: "object",
+        properties: { error: { type: "string" }, message: { type: "string" } }
+      },
+      503: {
+        type: "object",
+        properties: { error: { type: "string" }, message: { type: "string" } }
+      }
+    }
+  }
+}, async (req, reply) => {
   try {
     const consulta: Record<string, unknown> = req.query as Record<string, unknown>;
 
