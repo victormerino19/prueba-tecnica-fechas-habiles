@@ -1,6 +1,5 @@
-version: "3.9"
 services:
-  api:
+  app:
     build: .
     ports:
       - "3000:3000"
