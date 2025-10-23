@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fechas Hábiles API</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, "Noto Sans", sans-serif; line-height: 1.6; margin: 2rem; }
+      code { background: #f4f4f4; padding: 0.25rem 0.4rem; border-radius: 4px; }
+      a { color: #0d6efd; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <h1>Fechas Hábiles API</h1>
+    <p>Este proyecto expone un endpoint público en Vercel:</p>
+    <p>
+      <code>/api/fecha-habil?days=2&date=2024-09-29T10:00:00Z</code>
+    </p>
+    <p>Ejemplos rápidos:</p>
+    <ul>
+      <li><a href="/api/fecha-habil?days=2&date=2024-09-29T10:00:00Z">Sumar 2 días hábiles</a></li>
+      <li><a href="/api/fecha-habil?hours=5">Sumar 5 horas hábiles (desde ahora)</a></li>
+    </ul>
+    <p>Fuente de festivos: <code>HOLIDAYS_URL</code> (por defecto: <a href="https://content.capta.co/Recruitment/WorkingDays.json" target="_blank" rel="noopener">WorkingDays.json</a>).</p>
+  </body>
+</html>
