@@ -177,7 +177,15 @@ Commits relevantes:
 
 Si necesitas que documente punto por punto contra el texto exacto del `.docx`, indícame y lo desgloso como checklist; la implementación ya cubre los requerimientos descritos arriba.
 
-## Despliegue público (Render)
+## Despliegue público (Vercel – gratis)
+- Vercel Hobby es gratuito y soporta funciones serverless.
+- Ya incluí `api/fecha-habil.ts` y `vercel.json`.
+- Pasos:
+  1) Crea cuenta en Vercel y conecta este repo.
+  2) En “Environment Variables”, añade `HOLIDAYS_URL` con `https://content.capta.co/Recruitment/WorkingDays.json`.
+  3) Despliega. La URL pública será `https://<proyecto>.vercel.app`.
+- Endpoint: `GET https://<proyecto>.vercel.app/api/fecha-habil?date=...&days=...&hours=...`
+- Nota: el servidor local Fastify sigue funcionando para desarrollo; Vercel sirve solo el endpoint como función.
 - Usa el blueprint incluido (`render.yaml`) para desplegar con un clic.
 - Enlace directo: `https://render.com/deploy?repo=https://github.com/victormerino19/prueba-tecnica-fechas-habiles`
 - Servicio sugerido: `fechas-habiles-api`.
