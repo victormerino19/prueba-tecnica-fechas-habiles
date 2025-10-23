@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import type { ConfiguracionHorarioLaboral, ResultadoNormalizacion, ConjuntoFestivos } from "./tipos";
-import { esFestivoLocal } from "./festivos.js";
+import { esFestivoLocal } from "./festivos";
 
 export const configuracionLaboralPorDefecto: ConfiguracionHorarioLaboral = {
   zona: "America/Bogota",
