@@ -1,7 +1,9 @@
 import { DateTime } from "luxon";
-import { ProveedorFestivosRemoto } from "../src/festivos.js";
-import { sumarDiasHabiles, sumarHorasHabiles, normalizarHaciaAtrasAHorarioLaboral, configuracionLaboralPorDefecto } from "../src/tiempoLaboral.js";
+import { ProveedorFestivosRemoto } from "../src/festivos";
+import { sumarDiasHabiles, sumarHorasHabiles, normalizarHaciaAtrasAHorarioLaboral, configuracionLaboralPorDefecto } from "../src/tiempoLaboral";
 import type { RespuestaErrorApi, RespuestaExitosaApi } from "../src/tipos";
+
+export const config = { runtime: "nodejs20.x" };
 
 const URL_FESTIVOS = process.env.HOLIDAYS_URL || "https://content.capta.co/Recruitment/WorkingDays.json";
 const ZONA = configuracionLaboralPorDefecto.zona;

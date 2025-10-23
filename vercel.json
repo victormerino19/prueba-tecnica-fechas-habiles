@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/fecha-habil.ts": {
-      "runtime": "nodejs18.x"
-    }
-  }
-}
