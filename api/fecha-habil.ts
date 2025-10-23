@@ -19,6 +19,18 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
+    console.log("fecha-habil handler invoked");
+    // Self-test to catch any runtime load issues and return JSON instead of HTML error
+    try {
+      const ahoraLocal = DateTime.now().setZone(ZONA);
+      const _probe = normalizarHaciaAtrasAHorarioLaboral(ahoraLocal, new Set<string>());
+    } catch (probeErr) {
+      console.error("Self-test failed:", probeErr);
+      const err = crearError(503, `Self-test failed: ${(probeErr as Error).message}`, "UpstreamUnavailable");
+      res.status(err.status).json(err.body);
+      return;
+    }
+
     const consulta: Record<string, unknown> = (req.query || {}) as Record<string, unknown>;
 
     const diasCrudo = consulta["days"];
@@ -80,6 +92,7 @@ export default async function handler(req: any, res: any) {
 
     res.status(200).json(cuerpo);
   } catch (e) {
+    console.error("fecha-habil internal error", e);
     const err = crearError(503, `Error interno o de dependencia: ${(e as Error).message}`, "UpstreamUnavailable");
     res.status(err.status).json(err.body);
   }
